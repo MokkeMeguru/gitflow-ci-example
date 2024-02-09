@@ -38,20 +38,14 @@ jobs:
           git push origin "$releaseBranch"
           echo "RELEASE_BRANCH=$releaseBranch" >> $GITHUB_ENV
 
-      - name: Create PR to main
-        uses: repo-sync/pull-request@v2
+      - name: create release pr
+        run: |
+          gh pr create -B main -t ${{ steps.github.event.inputs.title }} -b ${{ steps.create-release-pr-body.outputs.report }}
         with:
-          destination_branch: "main"
-          source_branch: "${{ env.RELEASE_BRANCH }}"
-          pr_title: "${{ github.event.inputs.title }} to main"
-          pr_body: "Release PR for main based on ${{ env.RELEASE_BRANCH }}"
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create PR to develop
-        uses: repo-sync/pull-request@v2
+      - name: create release to develop
+        run: |
+          gh pr create -B develop -t "[Release to Develop]: ${{ steps.github.event.inputs.title }}" -b ${{ steps.create-release-pr-body.outputs.report }}
         with:
-          destination_branch: "develop"
-          source_branch: "${{ env.RELEASE_BRANCH }}"
-          pr_title: "${{ github.event.inputs.title }} back to develop"
-          pr_body: "Sync the release changes back to develop branch"
           github_token: ${{ secrets.GITHUB_TOKEN }}
