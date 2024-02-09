@@ -30,9 +30,9 @@ jobs:
 
       - name: Create release branch
         run: |
-          releaseBranch="release/$releaseDate"
+          releaseBranch="release/${{ github.event.inputs.releaseDate }}"
           git checkout -b "$releaseBranch"
-          git commit --allow-empty -m "Prepare release $releaseBranch"
+          git commit --allow-empty -m "[release] empty commit for $releaseBranch"
           git push origin "$releaseBranch"
           echo "RELEASE_BRANCH=$releaseBranch" >> $GITHUB_ENV
 
