@@ -50,6 +50,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
       - name: create release to develop
         run: |
-          gh pr create -B develop -t "[Release to Develop]: ${{ steps.github.event.inputs.title }}" -b "release develop"
+          gh pr create -B develop -t "[Release to Develop]: ${{ github.event.inputs.title }}" -b "release develop"
         env:
           GH_TOKEN: ${{ github.token }}
