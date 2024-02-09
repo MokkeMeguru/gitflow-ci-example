@@ -37,11 +37,15 @@ jobs:
           git commit --allow-empty -m "[release] empty commit for $releaseBranch"
           git push origin "$releaseBranch"
           echo "RELEASE_BRANCH=$releaseBranch" >> $GITHUB_ENV
-
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: create release pr
         run: |
           gh pr create -B main -t ${{ steps.github.event.inputs.title }} -b ${{ steps.create-release-pr-body.outputs.report }}
-
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: create release to develop
         run: |
           gh pr create -B develop -t "[Release to Develop]: ${{ steps.github.event.inputs.title }}" -b ${{ steps.create-release-pr-body.outputs.report }}
+        env:
+          GH_TOKEN: ${{ github.token }}
