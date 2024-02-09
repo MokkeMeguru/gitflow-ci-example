@@ -1,0 +1,55 @@
+name: Create Release PRs
+on:
+  workflow_dispatch:
+    inputs:
+      releaseDate:
+        description: "リリース日 YYYYMMDD"
+        required: true
+      title:
+        description: "PRのタイトル"
+        required: true
+
+jobs:
+  create_release_prs:
+    name: Create Release Branch and PRs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout develop branch
+        uses: actions/checkout@v3
+        with:
+          ref: "develop"
+
+      - name: Validate release date
+        id: validate
+        run: |
+          releaseDate="${{ github.event.inputs.releaseDate }}"
+          if ! date -d "$releaseDate" +%Y%m%d &>/dev/null; then
+            echo "Invalid release date: $releaseDate"
+            exit 1
+          fi
+
+      - name: Create release branch
+        run: |
+          releaseBranch="release/$releaseDate"
+          git checkout -b "$releaseBranch"
+          git commit --allow-empty -m "Prepare release $releaseBranch"
+          git push origin "$releaseBranch"
+          echo "RELEASE_BRANCH=$releaseBranch" >> $GITHUB_ENV
+
+      - name: Create PR to main
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "main"
+          source_branch: "${{ env.RELEASE_BRANCH }}"
+          pr_title: "${{ github.event.inputs.title }} to main"
+          pr_body: "Release PR for main based on ${{ env.RELEASE_BRANCH }}"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create PR to develop
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "develop"
+          source_branch: "${{ env.RELEASE_BRANCH }}"
+          pr_title: "${{ github.event.inputs.title }} back to develop"
+          pr_body: "Sync the release changes back to develop branch"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
