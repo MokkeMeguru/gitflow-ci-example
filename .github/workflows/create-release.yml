@@ -41,11 +41,7 @@ jobs:
       - name: create release pr
         run: |
           gh pr create -B main -t ${{ steps.github.event.inputs.title }} -b ${{ steps.create-release-pr-body.outputs.report }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: create release to develop
         run: |
           gh pr create -B develop -t "[Release to Develop]: ${{ steps.github.event.inputs.title }}" -b ${{ steps.create-release-pr-body.outputs.report }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
