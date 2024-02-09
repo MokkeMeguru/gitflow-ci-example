@@ -8,6 +8,9 @@ on:
       title:
         description: "PRのタイトル"
         required: true
+      author:
+        description: "PRを作った人(アルファベット e.g. meguru)"
+        required: true
 
 jobs:
   create_release_prs:
@@ -30,7 +33,7 @@ jobs:
 
       - name: Create release branch
         run: |
-          releaseBranch="release/${{ github.event.inputs.releaseDate }}"
+          releaseBranch="release/${{ github.event.inputs.releaseDate }}-${{ github.event.inputs.author }}-$(($RANDOM % 100))"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
           git config user.name  "[bot] ${GITHUB_ACTOR}"
           git checkout -b "$releaseBranch"
