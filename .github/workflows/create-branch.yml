@@ -16,7 +16,7 @@ on:
         required: true
         type: string
       repository:
-        description: "${{ github.repository }}"
+        description: "the value of github.repository"
         required: true
         type: string
       sourceBranch:
