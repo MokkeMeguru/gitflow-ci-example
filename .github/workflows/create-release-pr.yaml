@@ -18,6 +18,7 @@ jobs:
     with:
       releaseDate: ${{ inputs.releaseDate }}
       title: ${{ inputs.title }}
+      repository: ${{ github.repository }}
 
   create_release_pr:
     name: Create Release PR
