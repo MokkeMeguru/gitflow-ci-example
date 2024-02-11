@@ -6,10 +6,7 @@ on:
       releaseType:
         description: "release or hotfix"
         required: true
-        type: choice
-        options:
-          - release
-          - hotfix
+        type: string
       releaseDate:
         description: "Release Date: YYYYMMDD"
         required: true
