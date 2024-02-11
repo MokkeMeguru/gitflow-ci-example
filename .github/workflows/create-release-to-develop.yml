@@ -14,11 +14,28 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Create release to develop branch
+        id: create-release-to-develop-branch
         run: |
-          ORIGINAL_BRANCH="${{ github.event.pull_request.head.ref }}"
-          NEW_BRANCH_NAME="${ORIGINAL_BRANCH/release\//release-to-develop/}"
-          git checkout -b $NEW_BRANCH_NAME
-          git push origin $NEW_BRANCH_NAME
+          releaseBranch="${{ github.event.pull_request.head.ref }}"
+          releaseToDevelopBranch="${releaseBranch/release\//release-to-develop/}"
+          git checkout -b $releaseToDevelopBranch
+          echo "releaseToDevelopBranch=${releaseToDevelopBranch}" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run post release script
+        run: |
+          SCRIPT_PATH="./.github/config/post-release-script.sh"
+          if [ -f "$SCRIPT_PATH" ]; then
+            chmod +x "$SCRIPT_PATH"
+            ./"$SCRIPT_PATH"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push release to develop branch
+        run: |
+          git push origin "$releaseToDevelopBranch"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

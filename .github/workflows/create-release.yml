@@ -62,12 +62,29 @@ jobs:
           git config user.name  "[bot] ${GITHUB_ACTOR}"
 
       - name: Create release branch
+        id: create-release-branch
         run: |
           DATETIME_SUFFIX=$(date "+%Y%m%d%H%M")
           releaseBranch="release/${{ github.event.inputs.releaseDate }}-${GITHUB_ACTOR}-${DATETIME_SUFFIX}"
           git checkout -b "$releaseBranch"
           git commit --allow-empty -m "[release] empty commit for $releaseBranch"
-          git push origin "$releaseBranch"
+          echo "releaseBranch=${releaseBranch}" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run post release script
+        run: |
+          SCRIPT_PATH="./.github/config/post-release-script.sh"
+          if [ -f "$SCRIPT_PATH" ]; then
+            chmod +x "$SCRIPT_PATH"
+            ./"$SCRIPT_PATH"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push release branch
+        run: |
+          git push origin "${{ steps.create-release-branch.outputs.releaseBranch }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
