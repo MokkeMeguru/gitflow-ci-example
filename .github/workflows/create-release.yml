@@ -24,14 +24,16 @@ jobs:
         with:
           script: |
             const releaseDateStr = "${{inputs.releaseDate}}";
-            const releaseDate = new Date(releaseDateStr);
+            if (!/^(\d){8}$/.test(releaseDateStr)) {
+              core.setFailed(`invalid date format yyyymmdd: ${releaseDateStr}`)
+            }
+            const y = releaseDateStr.substr(0,4), m = releaseDateStr.substr(4,2) - 1, d = releaseDateStr.substr(6,2);
+            const releaseDate = new Date(y, m, d);
             if (isNaN(releaseDate.getDate())) {
               core.setFailed(`invalid date format yyyymmdd: ${releaseDateStr}`);
             }
-            const y = releaseDate.getFullYear();
-            const m = ("00" + (releaseDate.getMonth()+1)).slice(-2);
-            const d = ("00" + (releaseDate.getDate())).slice(-2);
-            if (releaseDateStr !== y  + m +  d) {
+            const dy = releaseDate.getFullYear(), dm = ("00" + (releaseDate.getMonth()+1)).slice(-2), dd = ("00" + (releaseDate.getDate())).slice(-2);
+            if (releaseDateStr !== dy+dm+dd) {
               core.setFailed(`invalid date format yyyymmdd: ${releaseDateStr}`);
             }
 
