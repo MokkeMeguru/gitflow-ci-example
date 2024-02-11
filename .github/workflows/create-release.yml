@@ -69,11 +69,11 @@ jobs:
           git commit --allow-empty -m "[release] empty commit for $releaseBranch"
           git push origin "$releaseBranch"
           echo "RELEASE_BRANCH=$releaseBranch" >> $GITHUB_ENV
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create release PR
         run: |
           gh pr create --base main --title "${{ github.event.inputs.title }}" --body "${{ steps.create-release-pr-body.outputs.prBody }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
