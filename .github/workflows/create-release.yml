@@ -1,12 +1,12 @@
-name: Create Release PRs
+name: Create Release PR
 on:
   workflow_dispatch:
     inputs:
       releaseDate:
-        description: "リリース日 YYYYMMDD"
+        description: "release date: YYYYMMDD"
         required: true
       title:
-        description: "PRのタイトル"
+        description: "PR title"
         required: true
 
 jobs:
