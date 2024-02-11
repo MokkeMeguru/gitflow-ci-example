@@ -19,15 +19,16 @@ jobs:
         continue-on-error: true
         run: |
           git fetch --depth 1 origin ${{ github.event.pull_request.head.ref }}
-          COMMIT_LOG=$(git log --pretty=format:"%s|%an" -1)
+          COMMIT_LOG=$(git log --pretty=format:"%h|%s|%an" -1)
           PR_NUMBER=$(echo $COMMIT_LOG | grep -o -E "#[0-9]+") || true
           if [ "$PR_NUMBER" != "" ]; then
-            author=$(echo $COMMIT_LOG | cut -d '|' -f 2)
+            author=$(echo $COMMIT_LOG | cut -d '|' -f 3)
             message="- [ ] $PR_NUMBER : $author"
           else
-            COMMIT_MSG=$(echo $COMMIT_LOG | cut -d '|' -f 1)
-            author=$(echo $COMMIT_LOG | cut -d '|' -f 2)
-            message="- [ ] unknown ($COMMIT_MSG): $author"
+            COMMIT_HASH=$(echo $COMMIT_LOG | cut -d '|' -f 1)
+            COMMIT_MSG=$(echo $COMMIT_LOG | cut -d '|' -f 2)
+            author=$(echo $COMMIT_LOG | cut -d '|' -f 3)
+            message="- [ ] $COMMIT_MSG ($COMMIT_HASH): $author"
           fi
           echo "message=$message" >> $GITHUB_OUTPUT
       - name: comment
