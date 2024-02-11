@@ -2,11 +2,13 @@ name: Comment Merge PR to Release
 
 on:
   pull_request:
+    branches:
+      - release/*
     types: [closed]
 
 jobs:
   comment_merge_pr_to_release:
-    if: startsWith(github.event.pull_request.head.ref, 'release/') && github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Comment on PR
