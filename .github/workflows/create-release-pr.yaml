@@ -20,7 +20,7 @@ jobs:
           ref: "develop"
           fetch-depth: 0
 
-      - uses: ./.github/workflows/create-release.yml
+      - uses: ./.github/workflows/create-release-branch.yml
         id: create-release-branch
         with:
           releaseDate: ${{ inputs.releaseDate }}
