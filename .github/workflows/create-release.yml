@@ -43,14 +43,14 @@ jobs:
           git log --merges --grep='Merge pull request' --format='%B' remotes/origin/main...develop --pretty="%an|%s" > pr_list.txt
       - uses: actions/setup-go@v5
         with:
-          go-version-file: "./github/scripts/go.mod"
+          go-version-file: "./.github/scripts/go.mod"
       - name: Create Release PR Body
         id: create-release-pr-body
         run: |
           echo "PRBody<<EOF" >> $GITHUB_OUTPUT
           go run ./main.go createReleasePrBody ../../pr_list.txt
           echo "EOF" >> $GITHUB_OUTPUT
-        working-directory: ./github/scripts
+        working-directory: ./.github/scripts
       - name: Remove temporary file
         run: rm -rf ./pr_list.txt
       - name: Set commit user
