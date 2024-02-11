@@ -3,10 +3,10 @@ on:
   workflow_dispatch:
     inputs:
       releaseDate:
-        description: "リリース日 YYYYMMDD"
+        description: "Release Date: YYYYMMDD"
         required: true
       title:
-        description: "PRのタイトル"
+        description: "PR Title"
         required: true
 
 jobs:
@@ -74,3 +74,4 @@ jobs:
           gh pr create -B main -t "${{ github.event.inputs.title }}" -b ${{ steps.create-release-pr-body.outputs.body }}
         env:
           GH_TOKEN: ${{ github.token }}
+
