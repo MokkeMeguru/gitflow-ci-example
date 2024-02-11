@@ -23,9 +23,10 @@ jobs:
           PR_NUMBER=$(echo $COMMIT_LOG | grep -o -E "#[0-9]+")
           if [ "$PR_NUMBER" != "" ]; then
             author=$(echo $COMMIT_LOG | cut -d '|' -f 2)
-            message="- [ ] $number : $author"
+            message="- [ ] $PR_NUMBER : $author"
           else
-            message="- [ ] unknown ($COMMIT_LOG)"
+            author=$(echo $COMMIT_LOG | cut -d '|' -f 2)
+            message="- [ ] unknown ($COMMIT_LOG): $author"
           fi
           echo "message=$message" >> $GITHUB_OUTPUT
       - name: comment
