@@ -21,6 +21,7 @@ jobs:
     outputs:
       releaseBranch: ${{ steps.create-release-branch.outputs.releaseBranch }}
     steps:
+      - uses: actions/checkout@v4
       - name: Validate release date
         uses: actions/github-script@v7
         with:
