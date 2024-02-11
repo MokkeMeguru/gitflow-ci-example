@@ -25,7 +25,7 @@ jobs:
           script: |
             const releaseDateStr = "${{inputs.releaseDate}}";
             const releaseDate = new Date(releaseDateStr);
-            if (isNaN(date.getDate())) {
+            if (isNaN(releaseDate.getDate())) {
               core.setFailed(`invalid date format yyyymmdd: ${releaseDateStr}`);
             }
             const y = dt.getFullYear();
