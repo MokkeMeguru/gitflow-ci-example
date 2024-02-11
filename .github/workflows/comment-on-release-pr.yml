@@ -26,6 +26,7 @@ jobs:
             author=$(echo $COMMIT_LOG | cut -d '|' -f 2)
             message="- [ ] $PR_NUMBER : $author"
           else
+            echo "HERE!"
             COMMIT_MSG=$(echo $COMMIT_LOG | cut -d '|' -f 1)
             author=$(echo $COMMIT_LOG | cut -d '|' -f 2)
             message="- [ ] unknown ($COMMIT_MSG): $author"
