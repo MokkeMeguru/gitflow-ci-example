@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       releaseDate:
-        description: "release date: YYYYMMDD"
+        description: "Release Date: YYYYMMDD"
         required: true
       title:
-        description: "PR title"
+        description: "PR Title"
         required: true
 
 jobs:
