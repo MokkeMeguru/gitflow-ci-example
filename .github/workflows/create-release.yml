@@ -49,7 +49,7 @@ jobs:
         id: create-release-pr-body
         run: |
           echo "prBody<<EOF" >> $GITHUB_OUTPUT
-          go run ./main.go createReleasePrBody ../../pr_list.txt
+          go run ./main.go createReleasePrBody ../../pr_list.txt >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
         working-directory: ./.github/scripts
       - name: Remove temporary file
@@ -74,6 +74,6 @@ jobs:
 
       - name: create release pr
         run: |
-          gh pr create -B main -t "${{ github.event.inputs.title }}" -b ${{ steps.create-release-pr-body.outputs.prBody }}
+          gh pr create --base main --title "${{ github.event.inputs.title }}" --body ${{ steps.create-release-pr-body.outputs.prBody }}
         env:
           GH_TOKEN: ${{ github.token }}
