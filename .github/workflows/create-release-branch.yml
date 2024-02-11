@@ -6,13 +6,16 @@ on:
       releaseDate:
         description: "Release Date: YYYYMMDD"
         required: true
+        type: string
       title:
         description: "PR Title"
         required: true
+        type: strin
     outputs:
       releaseBranch:
         description: "Release Branch Name"
         value: ${{ jobs.create_release.outputs.body }}
+        type: string
 
 jobs:
   create_release:

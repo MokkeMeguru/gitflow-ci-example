@@ -6,9 +6,11 @@ on:
       releaseDate:
         description: "Release Date: YYYYMMDD"
         required: true
+        type: string
       title:
         description: "PR Title"
         required: true
+        type: string
 
 jobs:
   create_release_branch:
