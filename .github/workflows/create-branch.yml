@@ -27,7 +27,6 @@ on:
       branch:
         description: "Release/Hotfix Branch Name"
         value: ${{ jobs.create_release.outputs.body }}
-        type: string
 
 jobs:
   create_branch:
