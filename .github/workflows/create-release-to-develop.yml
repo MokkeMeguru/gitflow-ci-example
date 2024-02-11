@@ -25,7 +25,7 @@ jobs:
       - name: Create PR to Develop using GitHub CLI
         run: |
           PR_TITLE="[release to develop] ${{ github.event.pull_request.title }}"
-          PR_BODY="Release to Develop\n- #${{ github.event.pull_request.number }}"
+          PR_BODY=$'Release to Develop\n- #${{ github.event.pull_request.number }}'
           gh pr create --base develop --title "$PR_TITLE" --body "$PR_BODY"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
