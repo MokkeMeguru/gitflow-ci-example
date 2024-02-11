@@ -11,20 +11,21 @@ on:
         required: true
 
 jobs:
+  create_release_branch:
+    uses: ./.github/workflows/create-release-branch.yml
+    with:
+      releaseDate: ${{ inputs.releaseDate }}
+      title: ${{ inputs.title }}
+
   create_release_pr:
     name: Create Release PR
     runs-on: ubuntu-latest
+    needs: [create_release_branch]
     steps:
       - uses: actions/checkout@v4
         with:
           ref: "develop"
           fetch-depth: 0
-
-      - uses: ./.github/workflows/create-release-branch.yml
-        id: create-release-branch
-        with:
-          releaseDate: ${{ inputs.releaseDate }}
-          title: ${{ inputs.title }}
 
       - name: Fetch release PR list
         id: fetch-release-prlist
@@ -57,7 +58,7 @@ jobs:
 
       - name: Push release branch
         run: |
-          git push origin "${{ steps.create-release-branch.outputs.releaseBranch }}"
+          git push origin "${{ needs.create_release_branch.releaseBranch }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
