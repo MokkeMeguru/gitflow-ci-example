@@ -40,7 +40,7 @@ jobs:
 
       - name: Push release to develop branch
         run: |
-          git push origin "$releaseToDevelopBranch"
+          git push origin "${{ steps.create-release-to-develop-branch.outputs.releaseToDevelopBranch }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
