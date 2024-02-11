@@ -10,7 +10,7 @@ on:
       title:
         description: "PR Title"
         required: true
-        type: strin
+        type: string
     outputs:
       releaseBranch:
         description: "Release Branch Name"
