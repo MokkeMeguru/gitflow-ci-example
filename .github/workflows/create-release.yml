@@ -11,7 +11,7 @@ on:
 
 jobs:
   create_release_prs:
-    name: Create Release Branch and PRs
+    name: Create Release Branch and PR
     runs-on: ubuntu-latest
     steps:
       - name: Checkout develop branch
@@ -35,6 +35,22 @@ jobs:
               core.setFailed(`invalid date format yyyymmdd: ${releaseDateStr}`);
             }
 
+      - name: Fetch release PR list
+        id: fetch-release-prlist
+        run: |
+          git log --merges --grep='Merge pull request' --format='%B' remotes/origin/main...develop --pretty="%an|%s" > pr_list.txt
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: "./github/scripts/go.mod"
+      - name: Create Release PR Body
+        id: create-release-pr-body
+        run: |
+          echo "PRBody<<EOF" >> $GITHUB_OUTPUT
+          go run ./main.go createReleasePrBody ../../pr_list.txt
+          echo "EOF" >> $GITHUB_OUTPUT
+        working-directory: ./github/scripts
+      - name: Remove temporary file
+        run: rm -rf ./pr_list.txt
       - name: Set commit user
         run: |
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
@@ -55,6 +71,6 @@ jobs:
 
       - name: create release pr
         run: |
-          gh pr create -B main -t "${{ github.event.inputs.title }}" -b "release main"
+          gh pr create -B main -t "${{ github.event.inputs.title }}" -b ${{ steps.create-release-pr-body.outputs.body }}
         env:
           GH_TOKEN: ${{ github.token }}
