@@ -68,7 +68,6 @@ jobs:
           git checkout -b "$releaseBranch"
           git commit --allow-empty -m "[release] empty commit for $releaseBranch"
           git push origin "$releaseBranch"
-          echo "RELEASE_BRANCH=$releaseBranch" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
