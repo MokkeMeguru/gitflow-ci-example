@@ -1,0 +1,44 @@
+name: Comment on Release PR
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [synchronize]
+
+jobs:
+  comment_merge_pr:
+    runs-on: ubuntu-latest
+    if: contains(github.head_ref, 'release')
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Create message
+        id: create-message
+        continue-on-error: true
+        run: |
+          git fetch --depth 1 origin ${{ github.event.pull_request.head.ref }}
+          COMMIT_LOG=$(git log --pretty=format:"%h|%s|%an" -1)
+          PR_NUMBER=$(echo $COMMIT_LOG | grep -o -E "#[0-9]+") || true
+          if [ "$PR_NUMBER" != "" ]; then
+            author=$(echo $COMMIT_LOG | cut -d '|' -f 3)
+            message="- [ ] $PR_NUMBER : $author"
+          else
+            COMMIT_HASH=$(echo $COMMIT_LOG | cut -d '|' -f 1)
+            COMMIT_MSG=$(echo $COMMIT_LOG | cut -d '|' -f 2)
+            author=$(echo $COMMIT_LOG | cut -d '|' -f 3)
+            message="- [ ] $COMMIT_MSG ($COMMIT_HASH): $author"
+          fi
+          echo "message=$message" >> $GITHUB_OUTPUT
+      - name: comment
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "${{steps.create-message.outputs.message}}"
+            })
