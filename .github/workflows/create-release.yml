@@ -47,7 +47,7 @@ jobs:
       - name: Create Release PR Body
         id: create-release-pr-body
         run: |
-          echo "PRBody<<EOF" >> $GITHUB_OUTPUT
+          echo "prBody<<EOF" >> $GITHUB_OUTPUT
           go run ./main.go createReleasePrBody ../../pr_list.txt
           echo "EOF" >> $GITHUB_OUTPUT
         working-directory: ./.github/scripts
@@ -73,6 +73,6 @@ jobs:
 
       - name: create release pr
         run: |
-          gh pr create -B main -t "${{ github.event.inputs.title }}" -b ${{ steps.create-release-pr-body.outputs.body }}
+          gh pr create -B main -t "${{ github.event.inputs.title }}" -b ${{ steps.create-release-pr-body.outputs.prBody }}
         env:
           GH_TOKEN: ${{ github.token }}
