@@ -15,7 +15,6 @@ on:
       releaseBranch:
         description: "Release Branch Name"
         value: ${{ jobs.create_release.outputs.body }}
-        type: string
 
 jobs:
   create_release:
