@@ -1,4 +1,5 @@
-name: Create Release PRs
+name: Create Release PR
+
 on:
   workflow_dispatch:
     inputs:
@@ -10,15 +11,15 @@ on:
         required: true
 
 jobs:
-  create_release_prs:
+  create_release_pr:
     name: Create Release Branch and PR
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout develop branch
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
           ref: "develop"
           fetch-depth: 0
+
       - name: Validate release date
         uses: actions/github-script@v7
         with:
@@ -54,12 +55,11 @@ jobs:
         working-directory: ./.github/scripts
       - name: Remove temporary file
         run: rm -rf ./pr_list.txt
+
       - name: Set commit user
         run: |
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
           git config user.name  "[bot] ${GITHUB_ACTOR}"
-        env:
-          GH_TOKEN: ${{ github.token }}
 
       - name: Create release branch
         run: |
@@ -69,12 +69,11 @@ jobs:
           git commit --allow-empty -m "[release] empty commit for $releaseBranch"
           git push origin "$releaseBranch"
           echo "RELEASE_BRANCH=$releaseBranch" >> $GITHUB_ENV
-        env:
-          GH_TOKEN: ${{ github.token }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: create release pr
+      - name: Create release PR
         run: |
           gh pr create --base main --title "${{ github.event.inputs.title }}" --body "${{ steps.create-release-pr-body.outputs.prBody }}"
-        env:
-          GH_TOKEN: ${{ github.token }}
-
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

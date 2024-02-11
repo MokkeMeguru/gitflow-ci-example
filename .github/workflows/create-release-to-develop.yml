@@ -1,0 +1,31 @@
+name: Create Release to Develop PR
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  create_release_to_develop_pr:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create release to develop branch
+        run: |
+          ORIGINAL_BRANCH="${{ github.event.pull_request.head.ref }}"
+          NEW_BRANCH_NAME="${ORIGINAL_BRANCH/release\//release-to-develop/}"
+          git checkout -b $NEW_BRANCH_NAME
+          git push origin $NEW_BRANCH_NAME
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create PR to Develop using GitHub CLI
+        run: |
+          PR_TITLE="[release to develop] ${{ github.event.pull_request.title }}"
+          PR_BODY="Release to Develop\n- #${{ github.event.pull_request.number }}"
+          gh pr create --base develop --head $NEW_BRANCH_NAME --title "$PR_TITLE" --body "$PR_BODY"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
