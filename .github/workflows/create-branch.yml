@@ -40,6 +40,14 @@ jobs:
         with:
           repository: ${{ inputs.repository }}
           ref: ${{ inputs.sourceBranch }}
+
+      - name: Validate release type
+        uses: actions/github-script@v7
+        with:
+          script: |
+            if (${{inputs.releaseType}} !== "release" && ${{inputs.releaseType}} !== "hotfix") {
+              core.setFailed(`invalid release type: ${{inputs.releaseType}}`)
+            }
       - name: Validate release date
         uses: actions/github-script@v7
         with:
