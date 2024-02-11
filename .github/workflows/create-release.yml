@@ -28,9 +28,9 @@ jobs:
             if (isNaN(releaseDate.getDate())) {
               core.setFailed(`invalid date format yyyymmdd: ${releaseDateStr}`);
             }
-            const y = dt.getFullYear();
-            const m = ("00" + (dt.getMonth()+1)).slice(-2);
-            const d = ("00" + (dt.getDate())).slice(-2);
+            const y = releaseDate.getFullYear();
+            const m = ("00" + (releaseDate.getMonth()+1)).slice(-2);
+            const d = ("00" + (releaseDate.getDate())).slice(-2);
             if (releaseDateStr !== y  + m +  d) {
               core.setFailed(`invalid date format yyyymmdd: ${releaseDateStr}`);
             }
