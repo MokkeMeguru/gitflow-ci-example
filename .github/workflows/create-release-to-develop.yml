@@ -30,7 +30,7 @@ jobs:
 
       - name: Run post release script
         run: |
-          SCRIPT_PATH="./.github/config/post-release-script.sh"
+          SCRIPT_PATH="./.github/config/post-release-to-develop-script.sh"
           if [ -f "$SCRIPT_PATH" ]; then
             chmod +x "$SCRIPT_PATH"
             ./"$SCRIPT_PATH"
