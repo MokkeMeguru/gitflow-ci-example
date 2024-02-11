@@ -38,3 +38,12 @@ gitGraph
   checkout develop
   merge release
 ```
+
+## status
+
+- GitFlow
+  - [x] Release
+    - [x] Release to Main
+    - [x] Release to Develop (after release to main PR merged into main branch)
+  - [ ] Hotfix
+- [ ] Workflow Run
