@@ -2,5 +2,5 @@
 
 echo "release now!" > release.txt
 git add release.txt
-git commit -m "post release commit"
+git commit --allow-empty -m "post release commit"
 
