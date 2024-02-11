@@ -14,11 +14,13 @@ on:
 
 jobs:
   create_release_branch:
-    uses: ./.github/workflows/create-release-branch.yml
+    uses: ./.github/workflows/create-branch.yml
     with:
+      releaseType: release
       releaseDate: ${{ inputs.releaseDate }}
       title: ${{ inputs.title }}
       repository: ${{ github.repository }}
+      sourceBranch: develop
 
   create_release_pr:
     name: Create Release PR
