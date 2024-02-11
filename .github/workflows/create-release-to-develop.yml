@@ -13,6 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Set commit user
+        run: |
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.name  "[bot] ${GITHUB_ACTOR}"
+
       - name: Create release to develop branch
         id: create-release-to-develop-branch
         run: |
