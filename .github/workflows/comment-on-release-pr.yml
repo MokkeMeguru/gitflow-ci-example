@@ -29,7 +29,9 @@ jobs:
             author=$(echo $COMMIT_LOG | cut -d '|' -f 2)
             message="- [ ] unknown ($COMMIT_MSG): $author"
           fi
+          echo "message start!"
           echo $message
+          echo "message end!"
           echo "message=$message" >> $GITHUB_OUTPUT
       - name: comment
         uses: actions/github-script@v5
