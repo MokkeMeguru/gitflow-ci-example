@@ -20,6 +20,7 @@ jobs:
         run: |
           git fetch --depth 1 origin ${{ github.event.pull_request.head.ref }}
           COMMIT_LOG=$(git log --pretty=format:"%s|%an" -1)
+          echo "HELLO!"
           PR_NUMBER=$(echo $COMMIT_LOG | grep -o -E "#[0-9]+")
           if [ "$PR_NUMBER" != "" ]; then
             author=$(echo $COMMIT_LOG | cut -d '|' -f 2)
