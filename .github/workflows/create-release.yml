@@ -71,6 +71,6 @@ jobs:
 
       - name: Create release PR
         run: |
-          gh pr create --base main --title "${{ github.event.inputs.title }}" --body "${{ steps.create-release-pr-body.outputs.prBody }}"
+          gh pr create --base main --title "${{ github.event.inputs.title }}" --body "${{ steps.create-release-pr-body.outputs.body }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
