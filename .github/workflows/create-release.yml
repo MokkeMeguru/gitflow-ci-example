@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 0
 
       - name: Validate release date
-        uses: ./.github/actions/validate-yyyymmdd/action.yml
+        uses: ./.github/actions/validate-yyyymmdd
         with:
           date: ${{ inputs.releaseDate }}
 
@@ -29,7 +29,7 @@ jobs:
         id: fetch-release-prlist
         run: |
           git log --merges --grep='Merge pull request' --format='%B' remotes/origin/main...develop --pretty="%an|%s" > pr_list.txt
-      - uses: ./.github/actions/create-release-pr-body/action.yml
+      - uses: ./.github/actions/create-release-pr-body
         with:
           pr-list-path: ./pr_list.txt
       - name: Remove temporary file
