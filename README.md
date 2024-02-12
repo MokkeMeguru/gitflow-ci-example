@@ -46,4 +46,6 @@ gitGraph
     - [x] Release to Main
     - [x] Release to Develop (after release to main PR merged into main branch)
   - [ ] Hotfix
-- [ ] Workflow Run
+    - [ ] Hotfix to Main
+    - [ ] Hotfix to Develop (after hotfix to main PR merged into main branch)
+- Workflow Call
