@@ -18,6 +18,7 @@ runs:
         cache-dependency-path: "${{ github.action_path }}/go.sum"
     - run: |
         cp ${{ inputs.pr-list-path }} ${{ github.action_path }}/pr-list.txt
+      shell: bash
     - id: create-pr-body
       run: |
         echo "prBody<<EOF" >> $GITHUB_OUTPUT

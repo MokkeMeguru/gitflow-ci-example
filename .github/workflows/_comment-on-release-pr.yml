@@ -7,4 +7,5 @@ on:
     types: [synchronize]
 
 jobs:
-  uses: ./.github/workflows/comment-on-release-pr.yml
+  comment-on-release-pr:
+    uses: ./.github/workflows/comment-on-release-pr.yml
