@@ -1,0 +1,27 @@
+name: "Validate YYYYMMDD input"
+
+inputs:
+  date:
+    description: "Date: YYYYMMDD"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Validate release date
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const releaseDateStr = "${{inputs.releaseDate}}";
+          if (!/^(\d){8}$/.test(releaseDateStr)) {
+            core.setFailed(`invalid date format yyyymmdd: ${releaseDateStr}`)
+          }
+          const y = releaseDateStr.substr(0,4), m = releaseDateStr.substr(4,2) - 1, d = releaseDateStr.substr(6,2);
+          const releaseDate = new Date(y, m, d);
+          if (isNaN(releaseDate.getDate())) {
+            core.setFailed(`invalid date format yyyymmdd: ${releaseDateStr}`);
+          }
+          const dy = releaseDate.getFullYear(), dm = ("00" + (releaseDate.getMonth()+1)).slice(-2), dd = ("00" + (releaseDate.getDate())).slice(-2);
+          if (releaseDateStr !== dy+dm+dd) {
+            core.setFailed(`invalid date format yyyymmdd: ${releaseDateStr}`);
+          }

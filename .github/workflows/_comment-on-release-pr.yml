@@ -1,0 +1,10 @@
+name: comment on release pr
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [synchronize]
+
+jobs:
+  uses: ./.github/workflows/comment-on-release-pr.yml
