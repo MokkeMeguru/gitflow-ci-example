@@ -41,7 +41,6 @@ jobs:
 
       - name: Push release to develop branch
         run: |
-          git push origin --delete "${{ steps.create-release-to-develop-branch.outputs.releaseBranch }}"
           git push origin "${{ steps.create-release-to-develop-branch.outputs.releaseToDevelopBranch }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
