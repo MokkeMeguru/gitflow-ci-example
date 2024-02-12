@@ -29,7 +29,9 @@ jobs:
         id: fetch-release-prlist
         run: |
           git log --merges --grep='Merge pull request' --format='%B' remotes/origin/main...develop --pretty="%an|%s" > pr_list.txt
+
       - uses: ./.github/actions/create-release-pr-body
+        id: create-release-pr-body
         with:
           pr-list-path: ./pr_list.txt
       - name: Remove temporary file

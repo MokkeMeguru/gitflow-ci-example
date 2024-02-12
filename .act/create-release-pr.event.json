@@ -1,0 +1,7 @@
+{
+    "event": "workflow_dispatch",
+    "inputs": {
+        "title": "This is Title",
+        "releaseDate": "20240212"
+    }
+}
