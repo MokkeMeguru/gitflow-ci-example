@@ -48,3 +48,4 @@ gitGraph
   - [ ] Hotfix
     - [ ] Hotfix to Main
     - [ ] Hotfix to Develop (after hotfix to main PR merged into main branch)
+- Workflow Call
