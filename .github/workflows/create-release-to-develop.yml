@@ -30,9 +30,10 @@ jobs:
         run: |
           releaseBranch="${{ github.event.pull_request.head.ref }}"
           releaseToDevelopBranch="${releaseBranch/release\//release-to-develop/}"
-          git fetch origin ${{ github.event.pull_request.head.ref }}
-          git checkout ${{ github.event.pull_request.head.ref }}
+          MERGE_COMMIT_SHA=${{ github.event.pull_request.merge_commit_sha }}
+          PRE_MERGE_COMMIT=$(git rev-parse "$MERGE_COMMIT_SHA^1")
           git checkout -b $releaseToDevelopBranch
+          git rebase --onto $PRE_MERGE_COMMIT_SHA HEAD
           echo "releaseBranch=${releaseBranch}" >> $GITHUB_OUTPUT
           echo "releaseToDevelopBranch=${releaseToDevelopBranch}" >> $GITHUB_OUTPUT
         env:
