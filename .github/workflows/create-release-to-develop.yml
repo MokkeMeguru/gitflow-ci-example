@@ -32,6 +32,8 @@ jobs:
           releaseToDevelopBranch="${releaseBranch/release\//release-to-develop/}"
           MERGE_COMMIT_SHA=${{ github.event.pull_request.merge_commit_sha }}
           PRE_MERGE_COMMIT=$(git rev-parse "$MERGE_COMMIT_SHA^1")
+          echo $MERGE_COMMIT_SHA
+          echo $PRE_MERGE_COMMIT
           git checkout -b $releaseToDevelopBranch
           git rebase --onto $PRE_MERGE_COMMIT_SHA HEAD
           echo "releaseBranch=${releaseBranch}" >> $GITHUB_OUTPUT
