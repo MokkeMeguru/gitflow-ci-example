@@ -23,6 +23,8 @@ jobs:
         run: |
           releaseBranch="${{ github.event.pull_request.head.ref }}"
           releaseToDevelopBranch="${releaseBranch/release\//release-to-develop/}"
+          # revert merge commit
+          git reset --hard HEAD^1
           git checkout -b $releaseToDevelopBranch
           echo "releaseBranch=${releaseBranch}" >> $GITHUB_OUTPUT
           echo "releaseToDevelopBranch=${releaseToDevelopBranch}" >> $GITHUB_OUTPUT
